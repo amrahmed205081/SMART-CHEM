@@ -24,6 +24,7 @@ export function Navbar() {
     return () => document.body.classList.remove("nav-open");
   }, [open]);
 
+  // Measure sticky header bar only (not the overlay panel).
   useEffect(() => {
     const updateHeight = () => {
       if (headerRef.current) {
@@ -36,7 +37,7 @@ export function Navbar() {
     updateHeight();
     window.addEventListener("resize", updateHeight);
     return () => window.removeEventListener("resize", updateHeight);
-  }, [open]);
+  }, []);
 
   return (
     <>
@@ -89,35 +90,24 @@ export function Navbar() {
               aria-expanded={open}
               onClick={() => setOpen((v) => !v)}
             >
-              <span className="text-lg leading-none">{open ? "✕" : "☰"}</span>
+              <span className="relative block h-4 w-5" aria-hidden>
+                <span
+                  className={`absolute left-0 top-0 block h-0.5 w-5 rounded-full bg-brand transition-transform duration-300 ${
+                    open ? "translate-y-[7px] rotate-45" : ""
+                  }`}
+                />
+                <span
+                  className={`absolute left-0 top-[7px] block h-0.5 w-5 rounded-full bg-brand transition-opacity duration-200 ${
+                    open ? "opacity-0" : "opacity-100"
+                  }`}
+                />
+                <span
+                  className={`absolute left-0 top-[14px] block h-0.5 w-5 rounded-full bg-brand transition-transform duration-300 ${
+                    open ? "-translate-y-[7px] -rotate-45" : ""
+                  }`}
+                />
+              </span>
             </button>
-          </div>
-        </div>
-
-        <div className={`mobile-nav-panel border-t border-line bg-white lg:hidden ${open ? "is-open" : ""}`}>
-          <div className="site-container flex flex-col gap-1 py-3">
-            {links.map((link) => (
-              <NavLink
-                key={link.to}
-                to={link.to}
-                end={link.to === "/"}
-                onClick={() => setOpen(false)}
-                className={({ isActive }) =>
-                  `flex min-h-[44px] items-center rounded-md px-3 text-base ${
-                    isActive ? "bg-brand-light font-semibold text-brand" : "text-ink-muted"
-                  }`
-                }
-              >
-                {link.label}
-              </NavLink>
-            ))}
-            <Link
-              to="/contact"
-              onClick={() => setOpen(false)}
-              className="mt-2 flex min-h-[44px] items-center justify-center rounded-md bg-brand px-4 py-3 text-center text-sm font-semibold text-white sm:hidden"
-            >
-              Get a Quote
-            </Link>
           </div>
         </div>
       </header>
@@ -127,6 +117,39 @@ export function Navbar() {
         onClick={() => setOpen(false)}
         aria-hidden="true"
       />
+
+      <div
+        id="mobile-nav"
+        className={`mobile-nav-panel lg:hidden ${open ? "is-open" : ""}`}
+        aria-hidden={!open}
+      >
+        <div className="site-container flex flex-col py-2">
+          {links.map((link) => (
+            <NavLink
+              key={link.to}
+              to={link.to}
+              end={link.to === "/"}
+              onClick={() => setOpen(false)}
+              tabIndex={open ? 0 : -1}
+              className={({ isActive }) =>
+                `flex min-h-[40px] items-center rounded-md px-3 py-1.5 text-[15px] ${
+                  isActive ? "bg-brand-light font-semibold text-brand" : "text-ink-muted"
+                }`
+              }
+            >
+              {link.label}
+            </NavLink>
+          ))}
+          <Link
+            to="/contact"
+            onClick={() => setOpen(false)}
+            tabIndex={open ? 0 : -1}
+            className="mt-2 mb-1 flex min-h-[44px] items-center justify-center rounded-md bg-brand px-4 py-2.5 text-center text-sm font-semibold text-white sm:hidden"
+          >
+            Get a Quote
+          </Link>
+        </div>
+      </div>
     </>
   );
 }
