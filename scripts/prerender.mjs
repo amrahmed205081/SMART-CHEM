@@ -1,5 +1,4 @@
 import { createServer as createViteServer, preview } from "vite";
-import { chromium } from "playwright";
 import { existsSync, mkdirSync, readFileSync, writeFileSync } from "node:fs";
 import { dirname, resolve } from "node:path";
 import { fileURLToPath } from "node:url";
@@ -9,6 +8,9 @@ const __dirname = dirname(fileURLToPath(import.meta.url));
 const root = resolve(__dirname, "..");
 const distDir = resolve(root, "dist");
 const PLACEHOLDER = "https://YOUR-PRODUCTION-DOMAIN";
+
+/** Vercel build/runtime — use serverless Chromium (no system libnspr4). */
+const useServerlessChromium = Boolean(process.env.VERCEL || process.env.VERCEL_ENV);
 
 const siteUrl = (process.env.VITE_SITE_URL || "").trim().replace(/\/$/, "") || PLACEHOLDER;
 
@@ -21,6 +23,33 @@ if (!process.env.VITE_SITE_URL) {
 if (!existsSync(resolve(distDir, "index.html"))) {
   console.error("[prerender] dist/index.html missing. Run vite build first.");
   process.exit(1);
+}
+
+async function launchBrowser() {
+  if (useServerlessChromium) {
+    const { chromium: playwrightChromium } = await import("playwright-core");
+    const sparticuz = (await import("@sparticuz/chromium")).default;
+
+    if (typeof sparticuz.setGraphicsMode === "function") {
+      sparticuz.setGraphicsMode(false);
+    }
+
+    const executablePath = await sparticuz.executablePath();
+    const execDir = dirname(executablePath);
+    // Critical on Vercel: bundled .so libs live next to the Chromium binary.
+    process.env.LD_LIBRARY_PATH = [execDir, process.env.LD_LIBRARY_PATH].filter(Boolean).join(":");
+
+    console.log(`[prerender] Using @sparticuz/chromium at ${executablePath}`);
+    return playwrightChromium.launch({
+      args: sparticuz.args,
+      executablePath,
+      headless: true,
+    });
+  }
+
+  const { chromium } = await import("playwright");
+  console.log("[prerender] Using local Playwright Chromium");
+  return chromium.launch({ headless: true });
 }
 
 function routeToFile(route) {
@@ -198,7 +227,7 @@ const localOrigins = collectLocalOrigins(port);
 console.log(`[prerender] Preview server at ${base}`);
 
 const CONCURRENCY = Math.max(1, Math.min(3, Number(process.env.PRERENDER_CONCURRENCY || 3)));
-const browser = await chromium.launch({ headless: true });
+const browser = await launchBrowser();
 const failures = [];
 let completed = 0;
 
