@@ -1,0 +1,7 @@
+User-agent: *
+Allow: /
+
+# Public SmartChem pages, assets, CSS and JavaScript are crawlable.
+# Update VITE_SITE_URL before production deployment.
+
+Sitemap: https://YOUR-PRODUCTION-DOMAIN/sitemap.xml

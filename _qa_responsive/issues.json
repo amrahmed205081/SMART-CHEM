@@ -1,0 +1,282 @@
+[
+  {
+    "type": "tiny-text",
+    "route": "/",
+    "width": 320,
+    "detail": [
+      {
+        "text": "SMART CHEMICAL SOLUTIONS",
+        "size": 10,
+        "cls": "mb-3 text-[10px] font-semibold tracking-[0.2em] uppercase te"
+      },
+      {
+        "text": "About Us",
+        "size": 10,
+        "cls": "mb-2 text-[10px] font-semibold tracking-[0.2em] uppercase sm"
+      },
+      {
+        "text": "Our Products",
+        "size": 10,
+        "cls": "mb-2 text-[10px] font-semibold tracking-[0.2em] uppercase sm"
+      }
+    ]
+  },
+  {
+    "type": "tiny-text",
+    "route": "/about",
+    "width": 320,
+    "detail": [
+      {
+        "text": "About SmartChem",
+        "size": 10,
+        "cls": "mb-2 text-[10px] font-semibold tracking-[0.2em] uppercase te"
+      }
+    ]
+  },
+  {
+    "type": "tiny-text",
+    "route": "/products",
+    "width": 320,
+    "detail": [
+      {
+        "text": "Product Portfolio",
+        "size": 10,
+        "cls": "mb-2 text-[10px] font-semibold tracking-[0.2em] uppercase te"
+      }
+    ]
+  },
+  {
+    "type": "tiny-text",
+    "route": "/applications",
+    "width": 320,
+    "detail": [
+      {
+        "text": "Industries",
+        "size": 10,
+        "cls": "mb-2 text-[10px] font-semibold tracking-[0.2em] uppercase te"
+      }
+    ]
+  },
+  {
+    "type": "tiny-text",
+    "route": "/contact",
+    "width": 320,
+    "detail": [
+      {
+        "text": "Contact",
+        "size": 10,
+        "cls": "mb-2 text-[10px] font-semibold tracking-[0.2em] uppercase te"
+      }
+    ]
+  },
+  {
+    "type": "tiny-text",
+    "route": "/",
+    "width": 375,
+    "detail": [
+      {
+        "text": "SMART CHEMICAL SOLUTIONS",
+        "size": 10,
+        "cls": "mb-3 text-[10px] font-semibold tracking-[0.2em] uppercase te"
+      },
+      {
+        "text": "About Us",
+        "size": 10,
+        "cls": "mb-2 text-[10px] font-semibold tracking-[0.2em] uppercase sm"
+      },
+      {
+        "text": "Our Products",
+        "size": 10,
+        "cls": "mb-2 text-[10px] font-semibold tracking-[0.2em] uppercase sm"
+      }
+    ]
+  },
+  {
+    "type": "tiny-text",
+    "route": "/about",
+    "width": 375,
+    "detail": [
+      {
+        "text": "About SmartChem",
+        "size": 10,
+        "cls": "mb-2 text-[10px] font-semibold tracking-[0.2em] uppercase te"
+      }
+    ]
+  },
+  {
+    "type": "tiny-text",
+    "route": "/products",
+    "width": 375,
+    "detail": [
+      {
+        "text": "Product Portfolio",
+        "size": 10,
+        "cls": "mb-2 text-[10px] font-semibold tracking-[0.2em] uppercase te"
+      }
+    ]
+  },
+  {
+    "type": "tiny-text",
+    "route": "/applications",
+    "width": 375,
+    "detail": [
+      {
+        "text": "Industries",
+        "size": 10,
+        "cls": "mb-2 text-[10px] font-semibold tracking-[0.2em] uppercase te"
+      }
+    ]
+  },
+  {
+    "type": "tiny-text",
+    "route": "/contact",
+    "width": 375,
+    "detail": [
+      {
+        "text": "Contact",
+        "size": 10,
+        "cls": "mb-2 text-[10px] font-semibold tracking-[0.2em] uppercase te"
+      }
+    ]
+  },
+  {
+    "type": "tiny-text",
+    "route": "/",
+    "width": 390,
+    "detail": [
+      {
+        "text": "SMART CHEMICAL SOLUTIONS",
+        "size": 10,
+        "cls": "mb-3 text-[10px] font-semibold tracking-[0.2em] uppercase te"
+      },
+      {
+        "text": "About Us",
+        "size": 10,
+        "cls": "mb-2 text-[10px] font-semibold tracking-[0.2em] uppercase sm"
+      },
+      {
+        "text": "Our Products",
+        "size": 10,
+        "cls": "mb-2 text-[10px] font-semibold tracking-[0.2em] uppercase sm"
+      }
+    ]
+  },
+  {
+    "type": "tiny-text",
+    "route": "/about",
+    "width": 390,
+    "detail": [
+      {
+        "text": "About SmartChem",
+        "size": 10,
+        "cls": "mb-2 text-[10px] font-semibold tracking-[0.2em] uppercase te"
+      }
+    ]
+  },
+  {
+    "type": "tiny-text",
+    "route": "/products",
+    "width": 390,
+    "detail": [
+      {
+        "text": "Product Portfolio",
+        "size": 10,
+        "cls": "mb-2 text-[10px] font-semibold tracking-[0.2em] uppercase te"
+      }
+    ]
+  },
+  {
+    "type": "tiny-text",
+    "route": "/applications",
+    "width": 390,
+    "detail": [
+      {
+        "text": "Industries",
+        "size": 10,
+        "cls": "mb-2 text-[10px] font-semibold tracking-[0.2em] uppercase te"
+      }
+    ]
+  },
+  {
+    "type": "tiny-text",
+    "route": "/contact",
+    "width": 390,
+    "detail": [
+      {
+        "text": "Contact",
+        "size": 10,
+        "cls": "mb-2 text-[10px] font-semibold tracking-[0.2em] uppercase te"
+      }
+    ]
+  },
+  {
+    "type": "tiny-text",
+    "route": "/",
+    "width": 430,
+    "detail": [
+      {
+        "text": "SMART CHEMICAL SOLUTIONS",
+        "size": 10,
+        "cls": "mb-3 text-[10px] font-semibold tracking-[0.2em] uppercase te"
+      },
+      {
+        "text": "About Us",
+        "size": 10,
+        "cls": "mb-2 text-[10px] font-semibold tracking-[0.2em] uppercase sm"
+      },
+      {
+        "text": "Our Products",
+        "size": 10,
+        "cls": "mb-2 text-[10px] font-semibold tracking-[0.2em] uppercase sm"
+      }
+    ]
+  },
+  {
+    "type": "tiny-text",
+    "route": "/about",
+    "width": 430,
+    "detail": [
+      {
+        "text": "About SmartChem",
+        "size": 10,
+        "cls": "mb-2 text-[10px] font-semibold tracking-[0.2em] uppercase te"
+      }
+    ]
+  },
+  {
+    "type": "tiny-text",
+    "route": "/products",
+    "width": 430,
+    "detail": [
+      {
+        "text": "Product Portfolio",
+        "size": 10,
+        "cls": "mb-2 text-[10px] font-semibold tracking-[0.2em] uppercase te"
+      }
+    ]
+  },
+  {
+    "type": "tiny-text",
+    "route": "/applications",
+    "width": 430,
+    "detail": [
+      {
+        "text": "Industries",
+        "size": 10,
+        "cls": "mb-2 text-[10px] font-semibold tracking-[0.2em] uppercase te"
+      }
+    ]
+  },
+  {
+    "type": "tiny-text",
+    "route": "/contact",
+    "width": 430,
+    "detail": [
+      {
+        "text": "Contact",
+        "size": 10,
+        "cls": "mb-2 text-[10px] font-semibold tracking-[0.2em] uppercase te"
+      }
+    ]
+  }
+]

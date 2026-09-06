@@ -1,0 +1,1 @@
+WebP derivatives generated for performance. Original PNGs retained.

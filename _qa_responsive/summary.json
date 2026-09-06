@@ -1,0 +1,695 @@
+[
+  {
+    "width": 320,
+    "route": "/",
+    "ok": true,
+    "logoH": 52,
+    "navH": 74
+  },
+  {
+    "width": 320,
+    "route": "/about",
+    "ok": true,
+    "logoH": 52,
+    "navH": 74
+  },
+  {
+    "width": 320,
+    "route": "/products",
+    "ok": true,
+    "logoH": 52,
+    "navH": 74
+  },
+  {
+    "width": 320,
+    "route": "/products/category/pigments",
+    "ok": true,
+    "logoH": 52,
+    "navH": 74
+  },
+  {
+    "width": 320,
+    "route": "/products/category/pigments/toda",
+    "ok": true,
+    "logoH": 52,
+    "navH": 74
+  },
+  {
+    "width": 320,
+    "route": "/products/category/pigments/toda/universal",
+    "ok": true,
+    "logoH": 52,
+    "navH": 74
+  },
+  {
+    "width": 320,
+    "route": "/partners",
+    "ok": true,
+    "logoH": 52,
+    "navH": 74
+  },
+  {
+    "width": 320,
+    "route": "/partners/eagle-chemicals",
+    "ok": true,
+    "logoH": 52,
+    "navH": 74
+  },
+  {
+    "width": 320,
+    "route": "/applications",
+    "ok": true,
+    "logoH": 52,
+    "navH": 74
+  },
+  {
+    "width": 320,
+    "route": "/applications/decorative-paints",
+    "ok": true,
+    "logoH": 52,
+    "navH": 74
+  },
+  {
+    "width": 320,
+    "route": "/contact",
+    "ok": true,
+    "logoH": 52,
+    "navH": 74
+  },
+  {
+    "width": 375,
+    "route": "/",
+    "ok": true,
+    "logoH": 52,
+    "navH": 74
+  },
+  {
+    "width": 375,
+    "route": "/about",
+    "ok": true,
+    "logoH": 52,
+    "navH": 74
+  },
+  {
+    "width": 375,
+    "route": "/products",
+    "ok": true,
+    "logoH": 52,
+    "navH": 74
+  },
+  {
+    "width": 375,
+    "route": "/products/category/pigments",
+    "ok": true,
+    "logoH": 52,
+    "navH": 74
+  },
+  {
+    "width": 375,
+    "route": "/products/category/pigments/toda",
+    "ok": true,
+    "logoH": 52,
+    "navH": 74
+  },
+  {
+    "width": 375,
+    "route": "/products/category/pigments/toda/universal",
+    "ok": true,
+    "logoH": 52,
+    "navH": 74
+  },
+  {
+    "width": 375,
+    "route": "/partners",
+    "ok": true,
+    "logoH": 52,
+    "navH": 74
+  },
+  {
+    "width": 375,
+    "route": "/partners/eagle-chemicals",
+    "ok": true,
+    "logoH": 52,
+    "navH": 74
+  },
+  {
+    "width": 375,
+    "route": "/applications",
+    "ok": true,
+    "logoH": 52,
+    "navH": 74
+  },
+  {
+    "width": 375,
+    "route": "/applications/decorative-paints",
+    "ok": true,
+    "logoH": 52,
+    "navH": 74
+  },
+  {
+    "width": 375,
+    "route": "/contact",
+    "ok": true,
+    "logoH": 52,
+    "navH": 74
+  },
+  {
+    "width": 390,
+    "route": "/",
+    "ok": true,
+    "logoH": 52,
+    "navH": 74
+  },
+  {
+    "width": 390,
+    "route": "/about",
+    "ok": true,
+    "logoH": 52,
+    "navH": 74
+  },
+  {
+    "width": 390,
+    "route": "/products",
+    "ok": true,
+    "logoH": 52,
+    "navH": 74
+  },
+  {
+    "width": 390,
+    "route": "/products/category/pigments",
+    "ok": true,
+    "logoH": 52,
+    "navH": 74
+  },
+  {
+    "width": 390,
+    "route": "/products/category/pigments/toda",
+    "ok": true,
+    "logoH": 52,
+    "navH": 74
+  },
+  {
+    "width": 390,
+    "route": "/products/category/pigments/toda/universal",
+    "ok": true,
+    "logoH": 52,
+    "navH": 74
+  },
+  {
+    "width": 390,
+    "route": "/partners",
+    "ok": true,
+    "logoH": 52,
+    "navH": 74
+  },
+  {
+    "width": 390,
+    "route": "/partners/eagle-chemicals",
+    "ok": true,
+    "logoH": 52,
+    "navH": 74
+  },
+  {
+    "width": 390,
+    "route": "/applications",
+    "ok": true,
+    "logoH": 52,
+    "navH": 74
+  },
+  {
+    "width": 390,
+    "route": "/applications/decorative-paints",
+    "ok": true,
+    "logoH": 52,
+    "navH": 74
+  },
+  {
+    "width": 390,
+    "route": "/contact",
+    "ok": true,
+    "logoH": 52,
+    "navH": 74
+  },
+  {
+    "width": 430,
+    "route": "/",
+    "ok": true,
+    "logoH": 52,
+    "navH": 74
+  },
+  {
+    "width": 430,
+    "route": "/about",
+    "ok": true,
+    "logoH": 52,
+    "navH": 74
+  },
+  {
+    "width": 430,
+    "route": "/products",
+    "ok": true,
+    "logoH": 52,
+    "navH": 74
+  },
+  {
+    "width": 430,
+    "route": "/products/category/pigments",
+    "ok": true,
+    "logoH": 52,
+    "navH": 74
+  },
+  {
+    "width": 430,
+    "route": "/products/category/pigments/toda",
+    "ok": true,
+    "logoH": 52,
+    "navH": 74
+  },
+  {
+    "width": 430,
+    "route": "/products/category/pigments/toda/universal",
+    "ok": true,
+    "logoH": 52,
+    "navH": 74
+  },
+  {
+    "width": 430,
+    "route": "/partners",
+    "ok": true,
+    "logoH": 52,
+    "navH": 74
+  },
+  {
+    "width": 430,
+    "route": "/partners/eagle-chemicals",
+    "ok": true,
+    "logoH": 52,
+    "navH": 74
+  },
+  {
+    "width": 430,
+    "route": "/applications",
+    "ok": true,
+    "logoH": 52,
+    "navH": 74
+  },
+  {
+    "width": 430,
+    "route": "/applications/decorative-paints",
+    "ok": true,
+    "logoH": 52,
+    "navH": 74
+  },
+  {
+    "width": 430,
+    "route": "/contact",
+    "ok": true,
+    "logoH": 52,
+    "navH": 74
+  },
+  {
+    "width": 768,
+    "route": "/",
+    "ok": true,
+    "logoH": 66,
+    "navH": 92
+  },
+  {
+    "width": 768,
+    "route": "/about",
+    "ok": true,
+    "logoH": 66,
+    "navH": 92
+  },
+  {
+    "width": 768,
+    "route": "/products",
+    "ok": true,
+    "logoH": 66,
+    "navH": 92
+  },
+  {
+    "width": 768,
+    "route": "/products/category/pigments",
+    "ok": true,
+    "logoH": 66,
+    "navH": 92
+  },
+  {
+    "width": 768,
+    "route": "/products/category/pigments/toda",
+    "ok": true,
+    "logoH": 66,
+    "navH": 92
+  },
+  {
+    "width": 768,
+    "route": "/products/category/pigments/toda/universal",
+    "ok": true,
+    "logoH": 66,
+    "navH": 92
+  },
+  {
+    "width": 768,
+    "route": "/partners",
+    "ok": true,
+    "logoH": 66,
+    "navH": 92
+  },
+  {
+    "width": 768,
+    "route": "/partners/eagle-chemicals",
+    "ok": true,
+    "logoH": 66,
+    "navH": 92
+  },
+  {
+    "width": 768,
+    "route": "/applications",
+    "ok": true,
+    "logoH": 66,
+    "navH": 92
+  },
+  {
+    "width": 768,
+    "route": "/applications/decorative-paints",
+    "ok": true,
+    "logoH": 66,
+    "navH": 92
+  },
+  {
+    "width": 768,
+    "route": "/contact",
+    "ok": true,
+    "logoH": 66,
+    "navH": 92
+  },
+  {
+    "width": 1024,
+    "route": "/",
+    "ok": true,
+    "logoH": 74,
+    "navH": 103
+  },
+  {
+    "width": 1024,
+    "route": "/about",
+    "ok": true,
+    "logoH": 74,
+    "navH": 103
+  },
+  {
+    "width": 1024,
+    "route": "/products",
+    "ok": true,
+    "logoH": 74,
+    "navH": 103
+  },
+  {
+    "width": 1024,
+    "route": "/products/category/pigments",
+    "ok": true,
+    "logoH": 74,
+    "navH": 103
+  },
+  {
+    "width": 1024,
+    "route": "/products/category/pigments/toda",
+    "ok": true,
+    "logoH": 74,
+    "navH": 103
+  },
+  {
+    "width": 1024,
+    "route": "/products/category/pigments/toda/universal",
+    "ok": true,
+    "logoH": 74,
+    "navH": 103
+  },
+  {
+    "width": 1024,
+    "route": "/partners",
+    "ok": true,
+    "logoH": 74,
+    "navH": 103
+  },
+  {
+    "width": 1024,
+    "route": "/partners/eagle-chemicals",
+    "ok": true,
+    "logoH": 74,
+    "navH": 103
+  },
+  {
+    "width": 1024,
+    "route": "/applications",
+    "ok": true,
+    "logoH": 74,
+    "navH": 103
+  },
+  {
+    "width": 1024,
+    "route": "/applications/decorative-paints",
+    "ok": true,
+    "logoH": 74,
+    "navH": 103
+  },
+  {
+    "width": 1024,
+    "route": "/contact",
+    "ok": true,
+    "logoH": 74,
+    "navH": 103
+  },
+  {
+    "width": 1280,
+    "route": "/",
+    "ok": true,
+    "logoH": 74,
+    "navH": 103
+  },
+  {
+    "width": 1280,
+    "route": "/about",
+    "ok": true,
+    "logoH": 74,
+    "navH": 103
+  },
+  {
+    "width": 1280,
+    "route": "/products",
+    "ok": true,
+    "logoH": 74,
+    "navH": 103
+  },
+  {
+    "width": 1280,
+    "route": "/products/category/pigments",
+    "ok": true,
+    "logoH": 74,
+    "navH": 103
+  },
+  {
+    "width": 1280,
+    "route": "/products/category/pigments/toda",
+    "ok": true,
+    "logoH": 74,
+    "navH": 103
+  },
+  {
+    "width": 1280,
+    "route": "/products/category/pigments/toda/universal",
+    "ok": true,
+    "logoH": 74,
+    "navH": 103
+  },
+  {
+    "width": 1280,
+    "route": "/partners",
+    "ok": true,
+    "logoH": 74,
+    "navH": 103
+  },
+  {
+    "width": 1280,
+    "route": "/partners/eagle-chemicals",
+    "ok": true,
+    "logoH": 74,
+    "navH": 103
+  },
+  {
+    "width": 1280,
+    "route": "/applications",
+    "ok": true,
+    "logoH": 74,
+    "navH": 103
+  },
+  {
+    "width": 1280,
+    "route": "/applications/decorative-paints",
+    "ok": true,
+    "logoH": 74,
+    "navH": 103
+  },
+  {
+    "width": 1280,
+    "route": "/contact",
+    "ok": true,
+    "logoH": 74,
+    "navH": 103
+  },
+  {
+    "width": 1440,
+    "route": "/",
+    "ok": true,
+    "logoH": 74,
+    "navH": 103
+  },
+  {
+    "width": 1440,
+    "route": "/about",
+    "ok": true,
+    "logoH": 74,
+    "navH": 103
+  },
+  {
+    "width": 1440,
+    "route": "/products",
+    "ok": true,
+    "logoH": 74,
+    "navH": 103
+  },
+  {
+    "width": 1440,
+    "route": "/products/category/pigments",
+    "ok": true,
+    "logoH": 74,
+    "navH": 103
+  },
+  {
+    "width": 1440,
+    "route": "/products/category/pigments/toda",
+    "ok": true,
+    "logoH": 74,
+    "navH": 103
+  },
+  {
+    "width": 1440,
+    "route": "/products/category/pigments/toda/universal",
+    "ok": true,
+    "logoH": 74,
+    "navH": 103
+  },
+  {
+    "width": 1440,
+    "route": "/partners",
+    "ok": true,
+    "logoH": 74,
+    "navH": 103
+  },
+  {
+    "width": 1440,
+    "route": "/partners/eagle-chemicals",
+    "ok": true,
+    "logoH": 74,
+    "navH": 103
+  },
+  {
+    "width": 1440,
+    "route": "/applications",
+    "ok": true,
+    "logoH": 74,
+    "navH": 103
+  },
+  {
+    "width": 1440,
+    "route": "/applications/decorative-paints",
+    "ok": true,
+    "logoH": 74,
+    "navH": 103
+  },
+  {
+    "width": 1440,
+    "route": "/contact",
+    "ok": true,
+    "logoH": 74,
+    "navH": 103
+  },
+  {
+    "width": 1920,
+    "route": "/",
+    "ok": true,
+    "logoH": 74,
+    "navH": 103
+  },
+  {
+    "width": 1920,
+    "route": "/about",
+    "ok": true,
+    "logoH": 74,
+    "navH": 103
+  },
+  {
+    "width": 1920,
+    "route": "/products",
+    "ok": true,
+    "logoH": 74,
+    "navH": 103
+  },
+  {
+    "width": 1920,
+    "route": "/products/category/pigments",
+    "ok": true,
+    "logoH": 74,
+    "navH": 103
+  },
+  {
+    "width": 1920,
+    "route": "/products/category/pigments/toda",
+    "ok": true,
+    "logoH": 74,
+    "navH": 103
+  },
+  {
+    "width": 1920,
+    "route": "/products/category/pigments/toda/universal",
+    "ok": true,
+    "logoH": 74,
+    "navH": 103
+  },
+  {
+    "width": 1920,
+    "route": "/partners",
+    "ok": true,
+    "logoH": 74,
+    "navH": 103
+  },
+  {
+    "width": 1920,
+    "route": "/partners/eagle-chemicals",
+    "ok": true,
+    "logoH": 74,
+    "navH": 103
+  },
+  {
+    "width": 1920,
+    "route": "/applications",
+    "ok": true,
+    "logoH": 74,
+    "navH": 103
+  },
+  {
+    "width": 1920,
+    "route": "/applications/decorative-paints",
+    "ok": true,
+    "logoH": 74,
+    "navH": 103
+  },
+  {
+    "width": 1920,
+    "route": "/contact",
+    "ok": true,
+    "logoH": 74,
+    "navH": 103
+  }
+]

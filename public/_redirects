@@ -1,0 +1,4 @@
+# SPA fallback for non-prerendered routes on Netlify and other hosts that support _redirects.
+# Vercel ignores this file — SPA fallback on Vercel is configured in vercel.json → /200.html.
+# Existing prerendered files (/, /about/index.html, etc.) are served first.
+/*    /200.html   200
