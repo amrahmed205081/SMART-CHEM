@@ -346,7 +346,24 @@ const elapsedMs = Date.now() - startedAt;
 const elapsedSec = (elapsedMs / 1000).toFixed(1);
 
 if (failures.length) {
-  console.error(`[prerender] Failed ${failures.length}/${routes.length} routes in ${elapsedSec}s.`);
+  console.error("");
+  console.error("==================================================");
+  console.error("[prerender] FAILED ROUTES REPORT");
+  console.error("==================================================");
+
+  failures.forEach((failure, index) => {
+    console.error("");
+    console.error(`[${index + 1}/${failures.length}] ROUTE: ${failure.route}`);
+    console.error(`ERROR: ${failure.error}`);
+  });
+
+  console.error("");
+  console.error("==================================================");
+  console.error(
+    `[prerender] Failed ${failures.length}/${routes.length} routes in ${elapsedSec}s.`
+  );
+  console.error("==================================================");
+
   process.exit(1);
 }
 
