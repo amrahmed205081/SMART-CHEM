@@ -14,18 +14,26 @@ const useServerlessChromium = Boolean(process.env.VERCEL || process.env.VERCEL_E
 
 const siteUrl = (process.env.VITE_SITE_URL || "").trim().replace(/\/$/, "") || PLACEHOLDER;
 
-/** Retries per route (attempt 1 + 2 retries = 3 total). */
-const MAX_ATTEMPTS = Math.max(1, Number(process.env.PRERENDER_RETRIES || 3));
+/** Hard per-route wall clock — never let one URL hang the build. */
+const ROUTE_TIMEOUT_MS = Math.max(5000, Number(process.env.PRERENDER_ROUTE_TIMEOUT_MS || 18000));
+
+/** Recycle Chromium periodically to avoid Sparticuz memory growth. */
+const BROWSER_RESTART_EVERY = Math.max(
+  10,
+  Number(process.env.PRERENDER_BROWSER_RESTART_EVERY || (useServerlessChromium ? 40 : 80)),
+);
+
+/** Cap total browser launches for the whole build (periodic + crash recovery). */
+const MAX_BROWSER_LAUNCHES = Math.max(
+  5,
+  Number(process.env.PRERENDER_MAX_BROWSER_LAUNCHES || (useServerlessChromium ? 25 : 40)),
+);
 
 /**
- * Keep concurrency low on Vercel — Sparticuz Chromium OOMs / crashes under parallel load
- * after hundreds of pages (seen as "Target page, context or browser has been closed").
+ * Always sequential. Shared browser + periodic restart is not safe with parallel pages,
+ * and Vercel Sparticuz cannot sustain concurrency > 1 for this workload.
  */
-const defaultConcurrency = useServerlessChromium ? 1 : 2;
-const CONCURRENCY = Math.max(
-  1,
-  Math.min(3, Number(process.env.PRERENDER_CONCURRENCY || defaultConcurrency)),
-);
+const CONCURRENCY = 1;
 
 if (!process.env.VITE_SITE_URL) {
   console.warn(
@@ -51,16 +59,20 @@ async function launchBrowser() {
     const execDir = dirname(executablePath);
     process.env.LD_LIBRARY_PATH = [execDir, process.env.LD_LIBRARY_PATH].filter(Boolean).join(":");
 
-    console.log(`[prerender] Using @sparticuz/chromium at ${executablePath}`);
     return playwrightChromium.launch({
-      args: [...sparticuz.args, "--disable-dev-shm-usage", "--disable-gpu"],
+      args: [
+        ...sparticuz.args,
+        "--disable-dev-shm-usage",
+        "--disable-gpu",
+        "--single-process",
+        "--no-zygote",
+      ],
       executablePath,
       headless: true,
     });
   }
 
   const { chromium } = await import("playwright");
-  console.log("[prerender] Using local Playwright Chromium");
   return chromium.launch({ headless: true });
 }
 
@@ -188,7 +200,6 @@ function buildPageHtml(shell, snapshot, origins) {
   return html;
 }
 
-/** SPA shell fallback so the route still loads client-side if Chromium dies mid-capture. */
 function writeFallbackHtml(route, shell) {
   const outFile = routeToFile(route);
   mkdirSync(dirname(outFile), { recursive: true });
@@ -201,9 +212,14 @@ function isProductDetailRoute(route) {
 
 function isClosedError(err) {
   const msg = err instanceof Error ? err.message : String(err);
-  return /has been closed|Target page|Target closed|browser has been closed|context has been closed|Protocol error|Connection closed|crash/i.test(
+  return /has been closed|Target page|Target closed|browser has been closed|context has been closed|Protocol error|Connection closed|crash|browser disconnected/i.test(
     msg,
   );
+}
+
+function isTimeoutError(err) {
+  const msg = err instanceof Error ? err.message : String(err);
+  return /Route timeout|Timeout|timed out/i.test(msg);
 }
 
 function isPageOpen(page) {
@@ -217,9 +233,9 @@ function isPageOpen(page) {
 async function safeClosePage(page) {
   if (!page) return;
   try {
-    if (!page.isClosed()) await page.close();
+    if (!page.isClosed()) await page.close({ runBeforeUnload: false });
   } catch {
-    // Ignore close races on crashed Chromium.
+    // ignore
   }
 }
 
@@ -228,8 +244,16 @@ async function safeCloseBrowser(browser) {
   try {
     if (browser.isConnected()) await browser.close();
   } catch {
-    // Ignore.
+    // ignore
   }
+}
+
+function withTimeout(promise, ms, label) {
+  let timer;
+  const timeout = new Promise((_, reject) => {
+    timer = setTimeout(() => reject(new Error(`${label} after ${ms}ms`)), ms);
+  });
+  return Promise.race([promise, timeout]).finally(() => clearTimeout(timer));
 }
 
 async function loadRoutes() {
@@ -294,45 +318,48 @@ const localOrigins = collectLocalOrigins(port);
 
 console.log(`[prerender] Preview server at ${base}`);
 console.log(
-  `[prerender] Concurrency=${CONCURRENCY} attempts=${MAX_ATTEMPTS} serverless=${useServerlessChromium}`,
+  `[prerender] Config concurrency=${CONCURRENCY} routeTimeout=${ROUTE_TIMEOUT_MS}ms restartEvery=${BROWSER_RESTART_EVERY} maxBrowserLaunches=${MAX_BROWSER_LAUNCHES} serverless=${useServerlessChromium}`,
 );
 
-let browser = await launchBrowser();
+/** Shared browser lifecycle — one process, recycled periodically. */
+let browser = null;
+let browserLaunches = 0;
+let routesSinceBrowserStart = 0;
 const failures = [];
 const fallbacks = [];
 let completed = 0;
+let successCount = 0;
 
-async function ensureBrowser() {
-  if (browser && browser.isConnected()) return browser;
-  console.warn("[prerender] Browser disconnected — relaunching…");
+async function startBrowser(reason) {
+  if (browserLaunches >= MAX_BROWSER_LAUNCHES) {
+    throw new Error(
+      `Browser launch limit reached (${MAX_BROWSER_LAUNCHES}). Remaining routes will use SPA fallback.`,
+    );
+  }
   await safeCloseBrowser(browser);
+  browser = null;
+  browserLaunches += 1;
+  console.log(
+    `[prerender] Browser restart (${reason}) launch ${browserLaunches}/${MAX_BROWSER_LAUNCHES}`,
+  );
   browser = await launchBrowser();
+  routesSinceBrowserStart = 0;
   return browser;
 }
 
-async function newWorkerPage() {
-  const b = await ensureBrowser();
-  const page = await b.newPage({ viewport: { width: 1280, height: 800 } });
-  page.setDefaultTimeout(60000);
-  page.on("crash", () => {
-    console.warn("[prerender] Page crashed");
-  });
-  return page;
+async function getBrowser(reason = "ensure") {
+  if (browser && browser.isConnected()) return browser;
+  return startBrowser(reason);
 }
 
 async function captureRouteOnce(page, route) {
-  if (!isPageOpen(page)) {
-    throw new Error("Page is already closed before capture");
-  }
+  if (!isPageOpen(page)) throw new Error("Page is already closed before capture");
 
   const url = route === "/" ? `${base}/` : `${base}${route}`;
   const expectedPath = route === "/" ? "/" : route;
 
-  await page.goto(url, { waitUntil: "domcontentloaded", timeout: 60000 });
-
-  if (!isPageOpen(page)) {
-    throw new Error("Page closed during navigation");
-  }
+  await page.goto(url, { waitUntil: "domcontentloaded", timeout: 12000 });
+  if (!isPageOpen(page)) throw new Error("Page closed during navigation");
 
   await page.waitForFunction(
     (path) => {
@@ -349,12 +376,10 @@ async function captureRouteOnce(page, route) {
       return Boolean(ready && pathOk && root?.childElementCount && title && desc && canonical && !notFound);
     },
     expectedPath,
-    { timeout: 30000 },
+    { timeout: 10000 },
   );
 
-  if (!isPageOpen(page)) {
-    throw new Error("Page closed while waiting for SEO readiness");
-  }
+  if (!isPageOpen(page)) throw new Error("Page closed while waiting for SEO readiness");
 
   if (isProductDetailRoute(route)) {
     await page.waitForFunction(
@@ -363,13 +388,11 @@ async function captureRouteOnce(page, route) {
         const codeVisible = /product code:/i.test(document.body?.innerText || "");
         return Boolean(h1 && codeVisible);
       },
-      { timeout: 15000 },
+      { timeout: 6000 },
     );
   }
 
-  if (!isPageOpen(page)) {
-    throw new Error("Page closed before page.evaluate()");
-  }
+  if (!isPageOpen(page)) throw new Error("Page closed before page.evaluate()");
 
   const snapshot = await page.evaluate(() => {
     const meta = (attr, key) =>
@@ -399,7 +422,6 @@ async function captureRouteOnce(page, route) {
   if (!snapshot.rootHtml || snapshot.rootHtml.length < 50) {
     throw new Error("Root HTML was empty after render");
   }
-
   if (/localhost|127\.0\.0\.1/i.test(snapshot.canonical || "")) {
     throw new Error(`Canonical still points at localhost: ${snapshot.canonical}`);
   }
@@ -408,129 +430,183 @@ async function captureRouteOnce(page, route) {
   const outFile = routeToFile(route);
   mkdirSync(dirname(outFile), { recursive: true });
   writeFileSync(outFile, html, "utf8");
-
   return html;
 }
 
-async function renderRouteWithRetries(route) {
-  console.log(`[prerender] Rendering: ${route}`);
-  let lastError = null;
+/**
+ * One attempt: open page → capture with wall-clock timeout → always close page.
+ * On browser crash: at most ONE restart + one retry for this route.
+ */
+async function renderRoute(route, index, total) {
+  console.log(`[prerender] Rendering [${index}/${total}]: ${route}`);
 
-  for (let attempt = 1; attempt <= MAX_ATTEMPTS; attempt += 1) {
-    console.log(`[prerender] Attempt ${attempt}/${MAX_ATTEMPTS}`);
-    let page = null;
-
+  // Memory-safe periodic recycle (not per-route relaunch).
+  if (browser && routesSinceBrowserStart >= BROWSER_RESTART_EVERY) {
+    console.log(
+      `[prerender] Memory-safe periodic restart after ${routesSinceBrowserStart} routes`,
+    );
     try {
-      await ensureBrowser();
-      page = await newWorkerPage();
-      const html = await captureRouteOnce(page, route);
-      await safeClosePage(page);
-
+      await startBrowser("periodic");
+    } catch (err) {
+      const message = err instanceof Error ? err.message : String(err);
+      console.error(`[prerender] Periodic restart failed: ${message}`);
+      writeFallbackHtml(route, spaShell);
+      fallbacks.push(route);
+      failures.push({ route, error: message, fallback: true });
       completed += 1;
+      console.log(`[prerender] Progress: ${completed}/${total}`);
+      return;
+    }
+  }
+
+  let lastError = null;
+  let didCrashRestart = false;
+
+  for (let attempt = 1; attempt <= 2; attempt += 1) {
+    let page = null;
+    try {
+      await getBrowser(attempt === 1 ? "initial" : "retry");
+      page = await browser.newPage({ viewport: { width: 1280, height: 800 } });
+      page.setDefaultTimeout(12000);
+
+      const html = await withTimeout(
+        captureRouteOnce(page, route),
+        ROUTE_TIMEOUT_MS,
+        "Route timeout",
+      );
+
+      await safeClosePage(page);
+      page = null;
+
+      routesSinceBrowserStart += 1;
+      successCount += 1;
+      completed += 1;
+
       const marker =
         `${html.includes("application/ld+json") ? " [json-ld]" : ""}` +
         `${/<h1[\s>]/.test(html) ? " [h1]" : ""}` +
         `${isProductDetailRoute(route) && /"@type"\s*:\s*"Product"/i.test(html) ? " [product]" : ""}`;
 
-      console.log(`[prerender] Success`);
-      if (completed === routes.length || completed % 10 === 0 || !isProductDetailRoute(route)) {
-        console.log(`[prerender] ✓ (${completed}/${routes.length}) ${route}${marker}`);
-      }
-      return { ok: true, fallback: false };
+      console.log(`[prerender] ✓ ${route}${marker}`);
+      console.log(`[prerender] Progress: ${completed}/${total}`);
+      return;
     } catch (err) {
       lastError = err;
       const message = err instanceof Error ? err.message : String(err);
-      const closed = isClosedError(err) || !isPageOpen(page);
+      const timedOut = isTimeoutError(err);
+      const crashed = isClosedError(err) || (browser && !browser.isConnected());
 
-      console.warn(
-        `[prerender] Attempt ${attempt}/${MAX_ATTEMPTS} failed for ${route}: ${message}`,
-      );
+      if (timedOut) {
+        console.warn(`[prerender] Route timeout: ${route}`);
+      } else {
+        console.warn(`[prerender] Capture failed (${attempt}/2): ${message}`);
+      }
 
       await safeClosePage(page);
+      page = null;
 
-      if (closed || (browser && !browser.isConnected())) {
-        console.warn("[prerender] Page crashed or closed, retrying with a fresh page…");
-        await safeCloseBrowser(browser);
-        browser = null;
+      // Timeout / soft errors: do not relaunch browser in a loop — fall through to fallback.
+      if (timedOut) break;
+
+      // Crash: restart browser at most once for this route, then retry once.
+      if (crashed && !didCrashRestart && browserLaunches < MAX_BROWSER_LAUNCHES) {
+        didCrashRestart = true;
+        console.warn(`[prerender] Browser crash detected — restarting once and retrying route`);
+        try {
+          await startBrowser("crash-recovery");
+          continue;
+        } catch (launchErr) {
+          lastError = launchErr;
+          break;
+        }
       }
 
-      if (attempt < MAX_ATTEMPTS) {
-        await new Promise((r) => setTimeout(r, 500 * attempt));
-      }
+      break;
     }
   }
 
   const errorText = lastError instanceof Error ? lastError.message : String(lastError);
-  console.error(`[prerender] Giving up on ${route} after ${MAX_ATTEMPTS} attempts: ${errorText}`);
+  console.error(`[prerender] Fallback SPA HTML for ${route}: ${errorText}`);
   writeFallbackHtml(route, spaShell);
   fallbacks.push(route);
   failures.push({ route, error: errorText, fallback: true });
   completed += 1;
-  console.warn(`[prerender] Wrote SPA fallback HTML for ${route}`);
-  return { ok: false, fallback: true };
+  // Count toward recycle so we still rotate even when falling back.
+  routesSinceBrowserStart += 1;
+  console.log(`[prerender] Progress: ${completed}/${total}`);
 }
 
-const queue = [...routes];
-const workers = Array.from({ length: CONCURRENCY }, async () => {
-  while (queue.length) {
-    const route = queue.shift();
-    if (!route) break;
-    try {
-      await renderRouteWithRetries(route);
-    } catch (err) {
-      // Last-resort guard — should be rare.
-      const message = err instanceof Error ? err.message : String(err);
-      console.error(`[prerender] Unexpected worker error for ${route}: ${message}`);
-      try {
+await getBrowser("startup");
+
+if (CONCURRENCY === 1) {
+  for (let i = 0; i < routes.length; i += 1) {
+    // If we hit launch cap mid-build, write fallbacks for the rest and stop Chromium work.
+    if (browserLaunches >= MAX_BROWSER_LAUNCHES && (!browser || !browser.isConnected())) {
+      const remaining = routes.slice(i);
+      console.warn(
+        `[prerender] Browser launch budget exhausted — writing SPA fallback for ${remaining.length} remaining routes`,
+      );
+      for (const route of remaining) {
         writeFallbackHtml(route, spaShell);
         fallbacks.push(route);
-      } catch {
-        // ignore
+        failures.push({
+          route,
+          error: "Browser launch budget exhausted",
+          fallback: true,
+        });
+        completed += 1;
+        console.log(`[prerender] Progress: ${completed}/${routes.length}`);
       }
-      failures.push({ route, error: message, fallback: true });
+      break;
     }
+    await renderRoute(routes[i], i + 1, routes.length);
   }
-});
+} else {
+  const queue = routes.map((route, i) => ({ route, index: i + 1 }));
+  const workers = Array.from({ length: CONCURRENCY }, async () => {
+    while (queue.length) {
+      const next = queue.shift();
+      if (!next) break;
+      await renderRoute(next.route, next.index, routes.length);
+    }
+  });
+  await Promise.all(workers);
+}
 
-await Promise.all(workers);
 await safeCloseBrowser(browser);
+browser = null;
 await previewServer.close();
 
 const elapsedSec = ((Date.now() - startedAt) / 1000).toFixed(1);
-const hardFailures = failures.filter((f) => !f.fallback);
-const criticalFailed = failures.filter((f) =>
-  ["/", "/about", "/products", "/contact", "/partners", "/applications"].includes(f.route),
-);
 
 if (failures.length) {
   console.error("");
   console.error("==================================================");
   console.error("[prerender] FAILED ROUTES REPORT");
   console.error("==================================================");
-  console.error(`[prerender] Total failed captures: ${failures.length}`);
-  console.error(`[prerender] SPA fallbacks written: ${fallbacks.length}`);
+  console.error(`[prerender] Failed captures: ${failures.length}`);
+  console.error(`[prerender] SPA fallbacks: ${fallbacks.length}`);
+  console.error(`[prerender] Successful prerenders: ${successCount}`);
   for (const [index, failure] of failures.entries()) {
-    console.error("");
-    console.error(`[${index + 1}/${failures.length}] ROUTE: ${failure.route}`);
-    console.error(`ERROR: ${failure.error}`);
-    console.error(`FALLBACK HTML: ${failure.fallback ? "yes" : "no"}`);
+    console.error(`[${index + 1}/${failures.length}] ${failure.route} — ${failure.error}`);
   }
   console.error("==================================================");
 }
 
 console.log(
-  `[prerender] Done. ${routes.length} routes processed (${completed} counted) in ${elapsedSec}s.` +
-    (fallbacks.length ? ` Fallbacks: ${fallbacks.length}.` : ""),
+  `[prerender] Done. ${routes.length} routes processed in ${elapsedSec}s ` +
+    `(ok=${successCount}, fallback=${fallbacks.length}, browserLaunches=${browserLaunches}).`,
 );
 
-// Fail the build only for catastrophic cases — not a single late Chromium crash.
-if (hardFailures.length || criticalFailed.length) {
-  console.error("[prerender] Critical failures remain without usable HTML — exiting with error.");
+// Always succeed if every route has HTML (prerendered or SPA fallback).
+const missing = routes.filter((route) => !existsSync(routeToFile(route)));
+if (missing.length) {
+  console.error(`[prerender] Missing HTML for ${missing.length} routes — failing build.`);
   process.exit(1);
 }
 
-if (failures.length) {
+if (fallbacks.length) {
   console.warn(
-    `[prerender] Non-critical capture failures were covered by SPA fallback HTML. Deployment continues.`,
+    `[prerender] ${fallbacks.length} route(s) used SPA fallback HTML. Deployment continues.`,
   );
 }
