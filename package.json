@@ -6,10 +6,12 @@
   "scripts": {
     "dev": "vite",
     "seo:generate": "node scripts/generate-seo.mjs",
+    "spa-shell": "node scripts/ensure-spa-shell.mjs",
     "images:optimize": "node scripts/optimize-site-images.mjs",
     "prerender": "node scripts/prerender.mjs",
     "prerender:verify": "node scripts/verify-prerender.mjs",
-    "build": "tsc --noEmit && vite build && npm run seo:generate && npm run prerender",
+    "build": "npm run seo:generate && tsc --noEmit && vite build && npm run prerender",
+    "build:vercel": "npm run seo:generate && tsc --noEmit && vite build && npm run spa-shell",
     "preview": "vite preview"
   },
   "dependencies": {
