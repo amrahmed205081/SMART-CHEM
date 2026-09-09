@@ -87,6 +87,20 @@ export function Footer() {
           <p>© {new Date().getFullYear()} SmartChem. All rights reserved.</p>
           <p>{company.tagline}</p>
         </div>
+        <div className="site-container pb-4 text-center text-[11px] leading-5 text-white/35 sm:text-left">
+          <p>
+            Crafted by{" "}
+            <a
+              href="https://www.linkedin.com/in/amr-ahmed2025?utm_source=share_via&utm_content=profile&utm_medium=member_ios"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="text-white/45 transition-colors hover:text-white/70 hover:underline"
+            >
+              AMR KAMAL
+            </a>
+            {" — RAVENOX"}
+          </p>
+        </div>
       </div>
     </footer>
   );
