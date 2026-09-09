@@ -16,7 +16,7 @@ export function organizationJsonLd() {
     legalName: SITE_NAME,
     description: company.intro || SITE_DEFAULT_DESCRIPTION,
     url: getSiteUrl(),
-    logo: absoluteAssetUrl("/assets/logo/smartchem.webp"),
+    logo: absoluteAssetUrl("/assets/logo/smartchem.png"),
     email: company.email,
     telephone: company.phone,
     address: {

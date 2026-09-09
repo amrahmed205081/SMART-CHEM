@@ -9,7 +9,7 @@ export function Footer() {
       <div className="site-container grid grid-cols-1 gap-8 py-10 sm:grid-cols-2 md:gap-8 lg:grid-cols-4 lg:gap-10 lg:py-12">
         <div className="min-w-0 sm:col-span-2 lg:col-span-1">
           <img
-            src="/assets/logo/smartchem.webp"
+            src="/assets/logo/smartchem.png"
             alt="SmartChem company logo"
             className="brand-logo brand-logo-footer mb-4"
           />

@@ -67,13 +67,21 @@ export function ProductPartner() {
             ]}
           />
           <div className="mt-8 grid items-center gap-5 sm:gap-8 lg:grid-cols-[180px_1fr]">
-            <div className={`mx-auto flex h-28 w-full max-w-[200px] items-center justify-center rounded-xl px-4 sm:h-32 ${source.logoOnDark ? "bg-brand" : "bg-white"}`}>
+            <div
+              className={`mx-auto flex h-24 w-full max-w-[240px] items-center justify-center rounded-xl px-3 sm:h-28 sm:max-w-[280px] ${
+                source.id === "smartchem-cell"
+                  ? "bg-transparent"
+                  : source.logoOnDark
+                    ? "bg-brand"
+                    : "bg-white"
+              }`}
+            >
               <img
                 src={source.logo}
                 alt={`${source.name} logo`}
                 className={
                   source.id === "smartchem-cell"
-                    ? "brand-logo max-h-16 max-w-[160px] sm:max-h-[4.5rem] sm:max-w-[180px]"
+                    ? "brand-logo max-h-14 max-w-[220px] sm:max-h-16 sm:max-w-[260px]"
                     : "max-h-14 max-w-[140px] object-contain sm:max-h-16 sm:max-w-[150px]"
                 }
               />

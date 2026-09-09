@@ -93,13 +93,21 @@ export function ProductCategory() {
                   to={categoryPath(category.id, source.id)}
                   className="group flex h-full flex-col rounded-xl border border-line bg-white p-6 shadow-card transition hover:-translate-y-1 hover:shadow-lift"
                 >
-                  <div className={`mb-6 flex h-28 items-center justify-center rounded-lg px-4 sm:h-32 ${source.logoOnDark ? "bg-brand" : "bg-cream"}`}>
+                  <div
+                    className={`mb-6 flex h-24 items-center justify-center rounded-lg px-3 sm:h-28 ${
+                      source.id === "smartchem-cell"
+                        ? "bg-transparent"
+                        : source.logoOnDark
+                          ? "bg-brand"
+                          : "bg-cream"
+                    }`}
+                  >
                     <img
                       src={source.logo}
                       alt={`${source.name} logo`}
                       className={
                         source.id === "smartchem-cell"
-                          ? "brand-logo max-h-[4.5rem] max-w-[200px] sm:max-h-20 sm:max-w-[220px]"
+                          ? "brand-logo max-h-14 max-w-[220px] sm:max-h-16 sm:max-w-[260px]"
                           : "max-h-16 max-w-[180px] object-contain"
                       }
                     />
