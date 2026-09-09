@@ -45,7 +45,7 @@ export function Navbar() {
         ref={headerRef}
         className="sticky top-0 z-50 border-b border-line bg-white/95 backdrop-blur-md"
       >
-        <div className="site-container flex items-center justify-between gap-3 py-2.5 sm:gap-4 sm:py-3 lg:py-3.5">
+        <div className="site-container flex items-center justify-between gap-3 py-2 sm:gap-4 sm:py-2.5 lg:py-3">
           <Link
             to="/"
             className="flex min-h-[44px] shrink-0 items-center"
@@ -54,7 +54,7 @@ export function Navbar() {
             <img
               src="/assets/logo/smartchem.webp"
               alt="SmartChem — Smart Chemical Solutions"
-              className="h-[56px] w-auto object-contain xs:h-[60px] sm:h-[66px] lg:h-[74px]"
+              className="brand-logo brand-logo-nav"
             />
           </Link>
 

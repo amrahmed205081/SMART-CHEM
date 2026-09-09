@@ -11,7 +11,7 @@ export function Footer() {
           <img
             src="/assets/logo/smartchem.webp"
             alt="SmartChem company logo"
-            className="mb-4 h-11 w-auto max-w-full rounded-md bg-white px-2 py-1 sm:h-12"
+            className="brand-logo brand-logo-footer mb-4"
           />
           <p className="max-w-xs text-sm leading-6 text-white/70">
             High-quality chemical raw materials for coatings, pigments, adhesives and industrial
@@ -87,18 +87,18 @@ export function Footer() {
           <p>© {new Date().getFullYear()} SmartChem. All rights reserved.</p>
           <p>{company.tagline}</p>
         </div>
-        <div className="site-container pb-4 text-center text-[11px] leading-5 text-white/35 sm:text-left">
-          <p>
-            Crafted by{" "}
+        <div className="site-container pb-5 pt-1 text-center sm:text-left">
+          <p className="leading-snug">
+            <span className="text-xs text-white/50 sm:text-sm">Crafted by </span>
             <a
               href="https://www.linkedin.com/in/amr-ahmed2025?utm_source=share_via&utm_content=profile&utm_medium=member_ios"
               target="_blank"
               rel="noopener noreferrer"
-              className="text-white/45 transition-colors hover:text-white/70 hover:underline"
+              className="text-base font-bold tracking-wide text-white/95 transition-colors hover:text-white hover:underline sm:text-lg"
             >
               AMR KAMAL
             </a>
-            {" — RAVENOX"}
+            <span className="text-sm font-medium text-white/75 sm:text-base"> — RAVENOX</span>
           </p>
         </div>
       </div>

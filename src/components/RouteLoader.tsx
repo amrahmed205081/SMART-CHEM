@@ -46,7 +46,7 @@ export function RouteLoader() {
       role="status"
     >
       <div className="route-loader-inner">
-        <img src="/assets/logo/smartchem.webp" alt="" className="route-loader-logo" />
+        <img src="/assets/logo/smartchem.webp" alt="" className="brand-logo brand-logo-loader route-loader-logo" />
         <div className="route-loader-line" />
       </div>
     </div>

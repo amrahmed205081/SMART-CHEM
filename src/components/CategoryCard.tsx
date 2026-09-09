@@ -33,7 +33,7 @@ export function CategoryCard({ category }: { category: Category }) {
           height={507}
           className={
             isLogo
-              ? "h-full w-full object-contain p-8"
+              ? "brand-logo brand-logo-feature"
               : "h-full w-full object-cover object-center transition duration-500 group-hover:scale-105"
           }
           loading="lazy"

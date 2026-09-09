@@ -49,6 +49,31 @@ img {
   .site-container-narrow {
     @apply mx-auto w-full max-w-5xl px-4 sm:px-6 lg:px-8;
   }
+
+  /* Shared SmartChem brand logo — keep aspect ratio; size via modifiers */
+  .brand-logo {
+    @apply w-auto max-w-full object-contain;
+  }
+
+  .brand-logo-nav {
+    @apply h-[64px] xs:h-[70px] sm:h-[78px] lg:h-[86px];
+  }
+
+  .brand-logo-footer {
+    @apply h-14 rounded-md bg-white px-2.5 py-1.5 sm:h-16 lg:h-[4.5rem];
+  }
+
+  .brand-logo-loader {
+    height: clamp(56px, 14vw, 80px);
+    border-radius: 10px;
+    background: #fff;
+    padding: 0.6rem 0.95rem;
+    box-shadow: 0 10px 30px rgba(31, 95, 99, 0.1);
+  }
+
+  .brand-logo-feature {
+    @apply h-full w-full object-contain p-5 sm:p-6 md:p-7;
+  }
 }
 
 .page-enter {
@@ -288,11 +313,6 @@ img {
 
 .route-loader-logo {
   width: auto;
-  height: clamp(48px, 12vw, 64px);
-  border-radius: 10px;
-  background: #fff;
-  padding: 0.55rem 0.85rem;
-  box-shadow: 0 10px 30px rgba(31, 95, 99, 0.1);
   animation: loader-logo 0.7s ease both;
 }
 
