@@ -74,7 +74,7 @@ export function Footer() {
               </a>
             </li>
             <li>
-              <a className="hover:text-white" href={company.mapsUrl} target="_blank" rel="noreferrer">
+              <a className="hover:text-white" href={company.mapsUrl} target="_blank" rel="noopener noreferrer">
                 {company.address}
               </a>
             </li>

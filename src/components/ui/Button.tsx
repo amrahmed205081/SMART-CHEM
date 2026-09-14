@@ -9,6 +9,8 @@ interface Props {
   onClick?: () => void;
   type?: "button" | "submit";
   className?: string;
+  /** When true with href, opens in a new tab with safe rel defaults. */
+  external?: boolean;
 }
 
 export function Button({
@@ -19,6 +21,7 @@ export function Button({
   onClick,
   type = "button",
   className = "",
+  external = false,
 }: Props) {
   const styles = {
     primary: "bg-brand text-white hover:bg-teal",
@@ -29,7 +32,21 @@ export function Button({
   const cls = `inline-flex min-h-[44px] items-center justify-center gap-2 rounded-md px-5 py-2.5 text-sm font-semibold transition ${styles} ${className}`;
 
   if (to) return <Link to={to} className={cls}>{children}</Link>;
-  if (href) return <a href={href} className={cls}>{children}</a>;
+  if (href) {
+    const isExternal =
+      external || /^https?:\/\//i.test(href) || href.startsWith("//");
+    return (
+      <a
+        href={href}
+        className={cls}
+        {...(isExternal
+          ? { target: "_blank", rel: "noopener noreferrer" }
+          : {})}
+      >
+        {children}
+      </a>
+    );
+  }
   return (
     <button type={type} onClick={onClick} className={cls}>
       {children}

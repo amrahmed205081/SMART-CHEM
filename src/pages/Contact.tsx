@@ -38,7 +38,7 @@ export function Contact() {
           <div className="rounded-xl bg-white p-5 shadow-card sm:p-6">
             <p className="text-xs font-semibold tracking-[0.18em] uppercase text-teal">Location</p>
             <p className="mt-2 text-base leading-7 text-navy sm:text-lg sm:leading-8">{company.address}</p>
-            <a href={company.mapsUrl} target="_blank" rel="noreferrer" className="mt-3 inline-flex min-h-[44px] items-center text-sm font-semibold text-teal">
+            <a href={company.mapsUrl} target="_blank" rel="noopener noreferrer" className="mt-3 inline-flex min-h-[44px] items-center text-sm font-semibold text-teal">
               Open in Google Maps →
             </a>
           </div>
