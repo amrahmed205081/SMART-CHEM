@@ -52,8 +52,11 @@ export function Navbar() {
             onClick={() => setOpen(false)}
           >
             <img
-              src="/assets/logo/smartchem.png"
+              src="/assets/logo/smartchem-mark.webp"
               alt="SmartChem — Smart Chemical Solutions"
+              width={480}
+              height={125}
+              decoding="async"
               className="brand-logo brand-logo-nav"
             />
           </Link>

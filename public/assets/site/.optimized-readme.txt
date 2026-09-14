@@ -1,1 +1,3 @@
 WebP derivatives generated for performance. Original PNGs retained.
+Hero responsive set: hero-640.webp, hero-860.webp, hero-1200.webp, hero.webp (1672w).
+Logo mark for nav/footer: /assets/logo/smartchem-mark.webp (transparent WebP).

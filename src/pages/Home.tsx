@@ -23,9 +23,11 @@ export function Home() {
   );
 
   return (
-    <div className="page-enter">
+    <>
+      {/* Hero image stays outside page-enter so LCP is not delayed by opacity animation. */}
       <Hero />
 
+      <div className="page-enter">
       <section className="bg-cream">
         <div className="site-container grid items-center gap-8 py-12 md:gap-10 md:py-16 lg:grid-cols-[1.1fr_0.9fr] lg:py-20">
           <div className="overflow-hidden rounded-xl bg-cream-dark">
@@ -145,6 +147,7 @@ export function Home() {
           </div>
         </div>
       </section>
-    </div>
+      </div>
+    </>
   );
 }

@@ -1,11 +1,23 @@
 import { company } from "../data/company";
 import { Button } from "./ui/Button";
 
+const HERO_SRC = "/assets/site/hero.webp";
+const HERO_SRCSET = [
+  "/assets/site/hero-640.webp 640w",
+  "/assets/site/hero-860.webp 860w",
+  "/assets/site/hero-1200.webp 1200w",
+  "/assets/site/hero.webp 1672w",
+].join(", ");
+/** Full-bleed hero — browser picks by viewport × DPR from srcset. */
+const HERO_SIZES = "100vw";
+
 export function Hero() {
   return (
     <section className="relative isolate overflow-hidden">
       <img
-        src="/assets/site/hero.webp"
+        src={HERO_SRC}
+        srcSet={HERO_SRCSET}
+        sizes={HERO_SIZES}
         alt=""
         width={1672}
         height={941}
